@@ -50,7 +50,7 @@ test("serialize polymorphic", function() {
   var tom, ray;
   run(function() {
     tom = env.store.createRecord('evilMinions/yellowMinion', { name: "Alex", id: "124" });
-    ray = env.store.createRecord(DoomsdayDevice, { evilMinion: tom, name: "DeathRay" });
+    ray = env.store.createRecord('doomsday-device', { evilMinion: tom, name: "DeathRay" });
   });
 
   var json = env.amsSerializer.serialize(ray._createSnapshot());
