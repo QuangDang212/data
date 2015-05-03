@@ -602,8 +602,7 @@ Store = Service.extend({
   findById: function(typeKey, id, preload) {
     Ember.assert('Passing classes to store methods has been removed. Please pass a dasherized string instead of '+ Ember.inspect(typeKey), typeof typeKey === 'string');
 
-    var typeClass = this.modelFor(typeKey);
-    var record = this.recordForId(typeClass, id);
+    var record = this.recordForId(typeKey, id);
 
     return this._findByRecord(record, preload);
   },
@@ -657,7 +656,7 @@ Store = Service.extend({
   fetchRecord: function(record) {
     var typeClass = record.constructor;
     var id = get(record, 'id');
-    var adapter = this.adapterFor(typeClass);
+    var adapter = this.adapterFor(typeClass.typeKey);
 
     Ember.assert("You tried to find a record but you have no adapter (for " + typeClass + ")", adapter);
     Ember.assert("You tried to find a record but your adapter (for " + typeClass + ") does not implement 'find'", typeof adapter.find === 'function');
@@ -705,7 +704,7 @@ Store = Service.extend({
 
   _flushPendingFetchForType: function (recordResolverPairs, typeClass) {
     var store = this;
-    var adapter = store.adapterFor(typeClass);
+    var adapter = store.adapterFor(typeClass.typeKey);
     var shouldCoalesce = !!adapter.findMany && adapter.coalesceFindRequests;
     var records = Ember.A(recordResolverPairs).mapBy('record');
 
@@ -1074,7 +1073,7 @@ Store = Service.extend({
    @param {String} optional typeKey
   */
   unloadAll: function(typeKey) {
-    Ember.assert('Passing classes to store methods has been removed. Please pass a dasherized string instead of '+ Ember.inspect(typeKey), typeof typeKey === 'string');
+    Ember.assert('Passing classes to store methods has been removed. Please pass a dasherized string instead of '+ Ember.inspect(typeKey), !typeKey || typeof typeKey === 'string');
     if (arguments.length === 0) {
       var typeMaps = this.typeMaps;
       var keys = Ember.keys(typeMaps);
@@ -1099,7 +1098,7 @@ Store = Service.extend({
     }
 
     function byType(entry) {
-      return typeMaps[entry]['type'];
+      return typeMaps[entry]['type'].typeKey;
     }
   },
 
@@ -1600,9 +1599,9 @@ Store = Service.extend({
 
     // Actually load the record into the store.
 
-    this._load(type, data);
+    this._load(typeKey, data);
 
-    var record = this.recordForId(type, data.id);
+    var record = this.recordForId(typeKey, data.id);
     var store = this;
 
     this._backburner.join(function() {
