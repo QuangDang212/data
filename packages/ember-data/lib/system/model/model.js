@@ -838,7 +838,7 @@ var Model = Ember.Object.extend(Ember.Evented, {
 
   _convertStringOrNumberIntoRecord: function(value, type) {
     if (Ember.typeOf(value) === 'string' || Ember.typeOf(value) === 'number') {
-      return this.store.recordForId('type', value);
+      return this.store.recordForId(type, value);
     }
     return value;
   },

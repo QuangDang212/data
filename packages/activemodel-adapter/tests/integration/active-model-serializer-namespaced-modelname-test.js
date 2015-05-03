@@ -27,7 +27,8 @@ module("integration/active_model - AMS-namespaced-model-names", {
       evilMinion:     EvilMinion,
       'evilMinions/yellowMinion':   YellowMinion,
       doomsdayDevice: DoomsdayDevice,
-      mediocreVillain: MediocreVillain
+      mediocreVillain: MediocreVillain,
+      yellowMinion: YellowMinion
     });
     env.store.modelFor('super-villain');
     env.store.modelFor('evil-minion');
@@ -90,7 +91,7 @@ test("extractPolymorphic hasMany", function() {
     "id": 1,
     "name": "Dr Horrible",
     "evilMinions": [{
-      type: "evilMinions/yellowMinion",
+      type: "evil-minions/yellow-minion",
       id: 12
     }]
   });
@@ -111,7 +112,7 @@ test("extractPolymorphic", function() {
     "id": 1,
     "name": "DeathRay",
     "evilMinion": {
-      type: "evilMinions/yellowMinion",
+      type: "evil-minions/yellow-minion",
       id: 12
     }
   });
