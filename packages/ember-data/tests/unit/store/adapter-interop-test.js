@@ -1,8 +1,8 @@
 var get = Ember.get;
 var set = Ember.set;
 var resolve = Ember.RSVP.resolve;
-var TestAdapter, store;
-var run = Ember.run, person;
+var TestAdapter, store, person;
+var run = Ember.run;
 
 module("unit/store/adapter_interop - DS.Store working with a DS.Adapter", {
   setup: function() {
