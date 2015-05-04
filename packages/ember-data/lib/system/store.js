@@ -1564,20 +1564,13 @@ Store = Service.extend({
     records, as well as to update existing records.
 
     @method push
-<<<<<<< HEAD
-    @param {String or subclass of DS.Model} typeKey
-=======
     @param {String} typeKey
->>>>>>> wip
     @param {Object} data
     @return {DS.Model} the record that was created or
       updated.
   */
   push: function(typeKey, data) {
-<<<<<<< HEAD
-=======
     Ember.assert('Passing classes to store methods has been removed. Please pass a dasherized string instead of '+ Ember.inspect(typeKey), typeof typeKey === 'string');
->>>>>>> wip
     Ember.assert("Expected an object as `data` in a call to `push` for " + typeKey + " , but was " + data, Ember.typeOf(data) === 'object');
     Ember.assert("You must include an `id` for " + typeKey + " in an object passed to `push`", data.id != null && data.id !== '');
 

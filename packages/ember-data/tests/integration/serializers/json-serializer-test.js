@@ -454,3 +454,53 @@ test('serializeBelongsTo with async polymorphic', function() {
 
   deepEqual(json, expected, 'returned JSON is correct');
 });
+
+test('extractErrors respects custom key mappings', function() {
+  env.registry.register('serializer:post', DS.JSONSerializer.extend({
+    attrs: {
+      title: 'le_title',
+      comments: { key: 'my_comments' }
+    }
+  }));
+
+  var payload = {
+    errors: {
+      le_title: ["title errors"],
+      my_comments: ["comments errors"]
+    }
+  };
+
+  var errors = env.container.lookup('serializer:post').extractErrors(env.store, Post, payload);
+
+  deepEqual(errors, {
+    title: ["title errors"],
+    comments: ["comments errors"]
+  });
+});
+
+test('extractErrors expects error information located on the errors property of payload', function() {
+  env.registry.register('serializer:post', DS.JSONSerializer.extend());
+
+  var payload = {
+    attributeWhichWillBeRemovedinExtractErrors: ["true"],
+    errors: {
+      title: ["title errors"]
+    }
+  };
+
+  var errors = env.container.lookup('serializer:post').extractErrors(env.store, Post, payload);
+
+  deepEqual(errors, { title: ["title errors"] });
+});
+
+test('extractErrors leaves payload untouched if it has no errors property', function() {
+  env.registry.register('serializer:post', DS.JSONSerializer.extend());
+
+  var payload = {
+    untouchedSinceNoErrorsSiblingPresent: ["true"]
+  };
+
+  var errors = env.container.lookup('serializer:post').extractErrors(env.store, Post, payload);
+
+  deepEqual(errors, { untouchedSinceNoErrorsSiblingPresent: ["true"] });
+});
