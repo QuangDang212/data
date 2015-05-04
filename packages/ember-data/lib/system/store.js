@@ -1928,7 +1928,7 @@ Store = Service.extend({
   */
   retrieveManagedInstance: function(typeKey, name) {
     var normalizedTypeKey = this._normalizeTypeKey(typeKey);
-    var key = normalizedTypeKey +":"+name;
+    var key = normalizedTypeKey + ":" +name;
 
     if (!this._containerCache[key]) {
       var instance = this.container.lookup(key);
